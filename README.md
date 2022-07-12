@@ -8,3 +8,7 @@ API movies CRUD
 - Express.js
 - PostgreSQL
 - Sequelize
+
+## Execute
+
+- Charge the container of postgreSQL:`docker compose up -d`
