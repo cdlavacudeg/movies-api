@@ -1,13 +1,16 @@
 const express = require('express')
-const { models } = require('../libs/sequelize')
+const CharacterService = require('./../services/character.service')
 
 const router = express.Router()
+const service = new CharacterService()
 
-router.get('/', async (req, res) => {
-  const movies = await models.Character.findAll({
-    include: ['movies'],
-  })
-  res.json(movies)
+router.get('/', async (req, res, next) => {
+  try {
+    const movies = await service.find()
+    res.json(movies)
+  } catch (error) {
+    next(error)
+  }
 })
 
 module.exports = router

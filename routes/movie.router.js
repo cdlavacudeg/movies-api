@@ -1,13 +1,16 @@
 const express = require('express')
-const { models } = require('../libs/sequelize')
+const MovieService = require('./../services/movie.service')
 
 const router = express.Router()
+const service = new MovieService()
 
-router.get('/', async (req, res) => {
-  const movies = await models.Movie.findAll({
-    include: ['gender', 'characters'],
-  })
-  res.json(movies)
+router.get('/', async (req, res, next) => {
+  try {
+    const movies = await service.find()
+    res.json(movies)
+  } catch (error) {
+    next(error)
+  }
 })
 
 module.exports = router
