@@ -22,7 +22,6 @@ class MovieService {
     if (order) {
       options.order.push(['createdAt', order])
     }
-    console.log(order)
     const movies = await models.Movie.findAll(options)
     return movies
   }
@@ -38,6 +37,18 @@ class MovieService {
   async create(data) {
     const newMovie = await models.Movie.create(data)
     return newMovie
+  }
+
+  async update(id, changes) {
+    const movie = await models.Movie.findByPk(id)
+    const updatedMovie = await movie.update(changes)
+    return updatedMovie
+  }
+
+  async delete(id) {
+    const movie = await models.Movie.findByPk(id)
+    await movie.destroy()
+    return movie
   }
 }
 
