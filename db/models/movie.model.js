@@ -1,4 +1,5 @@
 const { Model, DataTypes, Sequelize } = require('sequelize')
+const { GENDER_TABLE } = require('./gender.model.js')
 
 const MOVIE_TABLE = 'movies'
 
@@ -27,10 +28,22 @@ const MovieSchema = {
     allowNull: false,
     type: DataTypes.INTEGER,
   },
+  genderId: {
+    field: 'gender_id',
+    allowNull: false,
+    type: DataTypes.INTEGER,
+    references: {
+      model: GENDER_TABLE,
+      key: 'id',
+    },
+    onUpdate: 'CASCADE',
+    onDelete: 'SET NULL',
+  },
 }
 
 class Movie extends Model {
   static associate(models) {
+    this.belongsTo(models.Gender, { as: 'gender' })
     this.belongsToMany(models.Character, {
       as: 'characters',
       through: models.MovieCharacter,

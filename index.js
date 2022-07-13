@@ -20,7 +20,7 @@ app.get('/', (req, res) => {
 
 app.get('/movies', async (req, res) => {
   const movies = await models.Movie.findAll({
-    include: ['characters'],
+    include: ['gender', 'characters'],
   })
   res.json(movies)
 })
@@ -32,6 +32,12 @@ app.get('/characters', async (req, res) => {
   res.json(movies)
 })
 
+app.get('/gender', async (req, res) => {
+  const gender = await models.Gender.findAll({
+    include: ['movies'],
+  })
+  res.json(gender)
+})
 app.use('*', (req, res) => {
   res.send('Page not found')
 })
