@@ -23,4 +23,14 @@ router.get('/:id', async (req, res, next) => {
   }
 })
 
+router.post('/', async (req, res, next) => {
+  try {
+    const body = req.body
+    const newMovie = await service.create(body)
+    res.status(201).json(newMovie)
+  } catch (error) {
+    next(error)
+  }
+})
+
 module.exports = router

@@ -34,6 +34,11 @@ class MovieService {
     })
     return movie
   }
+
+  async create(data) {
+    const newMovie = await models.Movie.create(data)
+    return newMovie
+  }
 }
 
 module.exports = MovieService
