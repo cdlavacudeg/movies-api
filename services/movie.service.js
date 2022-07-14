@@ -35,7 +35,9 @@ class MovieService {
   }
 
   async create(data) {
-    const newMovie = await models.Movie.create(data)
+    const newMovie = await models.Movie.create(data, {
+      include: ['gender'],
+    })
     return newMovie
   }
 

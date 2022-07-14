@@ -40,17 +40,33 @@ class CharacterService {
 
   async create(data) {
     const newCharacter = await models.Character.create(data)
+    await models.MovieCharacter.create({
+      movieId: data.movieId,
+      characterId: newCharacter.dataValues.id,
+    })
     return newCharacter
   }
 
   async update(id, changes) {
     const character = await models.Character.findByPk(id)
     const updatedCharacter = await character.update(changes)
+    if (changes.movieId) {
+      await models.MovieCharacter.destroy({
+        where: {
+          characterId: character.dataValues.id,
+        },
+      })
+
+      await models.MovieCharacter.create({
+        movieId: changes.movieId,
+        characterId: character.dataValues.id,
+      })
+    }
     return updatedCharacter
   }
 
   async delete(id) {
-    const character = await models.Movie.findByPk(id)
+    const character = await models.Character.findByPk(id)
     await character.destroy()
     return character
   }
