@@ -35,9 +35,14 @@ class MovieService {
   }
 
   async create(data) {
-    const newMovie = await models.Movie.create(data, {
-      include: ['gender'],
-    })
+    if (data.genderId && data.gender) {
+      delete data.gender
+    }
+    const options = {}
+    if (data.gender) {
+      options.include = ['gender']
+    }
+    const newMovie = await models.Movie.create(data, options)
     return newMovie
   }
 

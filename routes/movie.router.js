@@ -1,6 +1,9 @@
 const express = require('express')
+const { checkSchema } = require('express-validator')
 const MovieService = require('./../services/movie.service')
 const response = require('./../utils/responses')
+const { createMovieSchema } = require('./schemas/movie.schema')
+const { validateField } = require('./schemas/validate-field')
 
 const router = express.Router()
 const service = new MovieService()
@@ -24,15 +27,20 @@ router.get('/:id', async (req, res, next) => {
   }
 })
 
-router.post('/', async (req, res, next) => {
-  try {
-    const body = req.body
-    const newMovie = await service.create(body)
-    response.success(req, res, 'API post - movie created', { newMovie }, 201)
-  } catch (error) {
-    next(error)
+router.post(
+  '/',
+  checkSchema(createMovieSchema),
+  validateField,
+  async (req, res, next) => {
+    try {
+      const body = req.body
+      const newMovie = await service.create(body)
+      response.success(req, res, 'API post - movie created', { newMovie }, 201)
+    } catch (error) {
+      next(error)
+    }
   }
-})
+)
 
 router.patch('/:id', async (req, res, next) => {
   try {
