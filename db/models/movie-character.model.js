@@ -21,7 +21,7 @@ const MovieCharacterSchema = {
       key: 'id',
     },
     onupdate: 'CASCADE',
-    ondelete: 'SET NULL',
+    ondelete: 'CASCADE',
   },
   characterId: {
     field: 'character_id',
@@ -32,7 +32,7 @@ const MovieCharacterSchema = {
       key: 'id',
     },
     onUpdate: 'CASCADE',
-    onDelete: 'SET NULL',
+    onDelete: 'CASCADE',
   },
 }
 

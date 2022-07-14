@@ -15,6 +15,7 @@ const GenderSchema = {
   },
   name: {
     allowNull: false,
+    unique: true,
     type: DataTypes.STRING,
   },
 }
