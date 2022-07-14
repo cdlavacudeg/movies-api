@@ -1,4 +1,5 @@
 const express = require('express')
+const response = require('./../utils/responses')
 const CharacterService = require('./../services/character.service')
 
 const router = express.Router()
@@ -7,8 +8,8 @@ const service = new CharacterService()
 router.get('/', async (req, res, next) => {
   try {
     const query = req.query
-    const movies = await service.find(query)
-    res.json(movies)
+    const characters = await service.find(query)
+    response.success(req, res, 'API get - list of characters', { characters })
   } catch (error) {
     next(error)
   }
@@ -18,7 +19,7 @@ router.get('/:id', async (req, res, next) => {
   try {
     const { id } = req.params
     const character = await service.findOne(id)
-    res.json(character)
+    response.success(req, res, 'API get - character details ', { character })
   } catch (error) {
     next(error)
   }
@@ -28,7 +29,13 @@ router.post('/', async (req, res, next) => {
   try {
     const body = req.body
     const newCharacter = await service.create(body)
-    res.status(201).json(newCharacter)
+    response.success(
+      req,
+      res,
+      'API post - character created',
+      { newCharacter },
+      201
+    )
   } catch (error) {
     next(error)
   }
@@ -39,7 +46,9 @@ router.patch('/:id', async (req, res, next) => {
     const { id } = req.params
     const body = req.body
     const characterUpdated = await service.update(id, body)
-    res.json(characterUpdated)
+    response.success(req, res, 'API patch - character updated', {
+      characterUpdated,
+    })
   } catch (error) {
     next(error)
   }
@@ -49,7 +58,9 @@ router.delete('/:id', async (req, res, next) => {
   try {
     const { id } = req.params
     const characterDeleted = await service.delete(id)
-    res.json(characterDeleted)
+    response.success(req, res, 'API delete - character deleted', {
+      characterDeleted,
+    })
   } catch (error) {
     next(error)
   }
