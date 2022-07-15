@@ -9,7 +9,9 @@ router.get('/', async (req, res, next) => {
   try {
     const query = req.query
     const characters = await service.find(query)
-    response.success(req, res, 'API get - list of characters', { characters })
+    response.success(req, res, 'API get - list of characters', {
+      character: characters,
+    })
   } catch (error) {
     next(error)
   }
@@ -33,7 +35,7 @@ router.post('/', async (req, res, next) => {
       req,
       res,
       'API post - character created',
-      { newCharacter },
+      { character: newCharacter },
       201
     )
   } catch (error) {
@@ -47,7 +49,7 @@ router.patch('/:id', async (req, res, next) => {
     const body = req.body
     const characterUpdated = await service.update(id, body)
     response.success(req, res, 'API patch - character updated', {
-      characterUpdated,
+      character: characterUpdated,
     })
   } catch (error) {
     next(error)
@@ -59,7 +61,7 @@ router.delete('/:id', async (req, res, next) => {
     const { id } = req.params
     const characterDeleted = await service.delete(id)
     response.success(req, res, 'API delete - character deleted', {
-      characterDeleted,
+      character: characterDeleted,
     })
   } catch (error) {
     next(error)

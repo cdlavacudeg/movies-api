@@ -15,7 +15,7 @@ const service = new MovieService()
 router.get('/', async (req, res, next) => {
   try {
     const movies = await service.find(req.query)
-    response.success(req, res, 'API get - list of movies', { movies })
+    response.success(req, res, 'API get - list of movies', { movie: movies })
   } catch (error) {
     next(error)
   }
@@ -44,7 +44,13 @@ router.post(
     try {
       const body = req.body
       const newMovie = await service.create(body)
-      response.success(req, res, 'API post - movie created', { newMovie }, 201)
+      response.success(
+        req,
+        res,
+        'API post - movie created',
+        { movie: newMovie },
+        201
+      )
     } catch (error) {
       next(error)
     }
@@ -61,7 +67,9 @@ router.patch(
       const { id } = req.params
       const body = req.body
       const movieUpdated = await service.update(id, body)
-      response.success(req, res, 'API patch - movie updated', { movieUpdated })
+      response.success(req, res, 'API patch - movie updated', {
+        movie: movieUpdated,
+      })
     } catch (error) {
       next(error)
     }
@@ -76,7 +84,9 @@ router.delete(
     try {
       const { id } = req.params
       const movieDeleted = await service.delete(id)
-      response.success(req, res, 'API delete - movie deleted', { movieDeleted })
+      response.success(req, res, 'API delete - movie deleted', {
+        movie: movieDeleted,
+      })
     } catch (error) {
       next(error)
     }
