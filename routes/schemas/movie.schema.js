@@ -1,3 +1,9 @@
+const { models } = require('./../../libs/sequelize')
+const {
+  uniqueInModelByField,
+  existsInModelById,
+} = require('./../../utils/db-validator')
+
 const createMovieSchema = {
   image: {
     in: ['body'],
@@ -37,6 +43,9 @@ const createMovieSchema = {
       },
       errorMessage: 'GenderId must be an int',
     },
+    custom: {
+      options: (genderId) => existsInModelById(models.Gender, genderId),
+    },
   },
   gender: {
     in: ['body'],
@@ -46,15 +55,17 @@ const createMovieSchema = {
     },
     optional: true,
     custom: {
-      options: (value) => {
+      options: (gender) => {
         // gender.name and gender.image are required
-        if (!value.name) {
+        if (!gender.name) {
           return Promise.reject('gender name is required')
         }
-        if (!value.image) {
+
+        if (!gender.image) {
           return Promise.reject('gender image is required')
         }
-        return true
+
+        return uniqueInModelByField(models.Gender, 'name', gender.name)
       },
     },
   },
