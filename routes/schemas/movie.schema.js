@@ -110,6 +110,7 @@ const idMovieSchema = {
     },
     custom: {
       options: (id) => existsInModelById(models.Movie, id),
+      bail: true,
     },
   },
 }

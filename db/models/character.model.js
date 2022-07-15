@@ -15,6 +15,7 @@ const CharacterSchema = {
   },
   name: {
     allowNull: false,
+    unique: true,
     type: DataTypes.STRING,
   },
   age: {

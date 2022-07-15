@@ -26,6 +26,7 @@ const idGenderSchema = {
     },
     custom: {
       options: (id) => existsInModelById(models.Gender, id),
+      bail: true,
     },
   },
 }
