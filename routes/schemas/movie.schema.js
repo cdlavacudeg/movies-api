@@ -42,6 +42,7 @@ const createMovieSchema = {
         return value != null
       },
       errorMessage: 'GenderId must be an int',
+      bail: true,
     },
     custom: {
       options: (genderId) => existsInModelById(models.Gender, genderId),
@@ -71,4 +72,46 @@ const createMovieSchema = {
   },
 }
 
-module.exports = { createMovieSchema }
+const updateMovieSchema = {
+  createdAt: {
+    in: ['body'],
+    isISO8601: {
+      if: (date) => date != null,
+      errorMessage: 'Created at must be a date in format ISO 8601',
+    },
+  },
+  calification: {
+    in: ['body'],
+    isInt: {
+      if: (calification) => calification != null,
+      errorMessage: 'Calification must be an int',
+    },
+  },
+  genderId: {
+    in: ['body'],
+    isInt: {
+      if: (genderId) => genderId != null,
+      errorMessage: 'GenderId must be an int',
+      bail: true,
+    },
+    custom: {
+      options: (genderId) => existsInModelById(models.Gender, genderId),
+    },
+  },
+}
+
+const idMovieSchema = {
+  id: {
+    in: ['params'],
+    isInt: {
+      if: (id) => id != null,
+      errorMessage: 'Movie id must be an int',
+      bail: true,
+    },
+    custom: {
+      options: (id) => existsInModelById(models.Movie, id),
+    },
+  },
+}
+
+module.exports = { createMovieSchema, updateMovieSchema, idMovieSchema }
