@@ -1,5 +1,7 @@
 const { models } = require('../libs/sequelize')
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
+const { config } = require('./../config/config')
 
 class UserService {
   async create(data) {
@@ -28,6 +30,12 @@ class UserService {
     }
     delete user.dataValues.password
     return user
+  }
+
+  signToken(user) {
+    const payload = { sub: user.id, email: user.email }
+    const token = jwt.sign(payload, config.jwtSecret, { expiresIn: '1d' })
+    return { user, token }
   }
 }
 

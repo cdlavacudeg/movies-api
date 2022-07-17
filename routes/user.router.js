@@ -27,7 +27,9 @@ router.post(
   passport.authenticate('local', { session: false }),
   async (req, res, next) => {
     try {
-      response.success(req, res, 'User loged in', { user: req.user }, 200)
+      const user = req.user
+      const data = service.signToken(user)
+      response.success(req, res, 'User loged in', data, 200)
     } catch (error) {
       next(error)
     }
