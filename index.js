@@ -18,6 +18,9 @@ app.use(cors())
 //Parse JSON
 app.use(express.json())
 
+//Use Auth passport
+require('./utils/auth')
+
 //Routes
 app.get('/', (req, res) => {
   res.send('Welcome to this movie API')
@@ -29,6 +32,7 @@ app.use('*', (req, res) => {
   response.error(req, res, 'Page not found', 400)
 })
 
+//Error handler
 app.use(logErrors)
 app.use(ormErrorHandler)
 app.use(errorHandler)

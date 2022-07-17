@@ -21,11 +21,8 @@ function ormErrorHandler(err, req, res, next) {
   next(err)
 }
 
-function errorHandler(err, req, res) {
-  response.error(req, res, {
-    msg: err.message,
-    stack: err.stack,
-  })
+function errorHandler(err, req, res, next) {
+  response.error(req, res, err.message)
 }
 
-module.exports = { logErrors, errorHandler, ormErrorHandler }
+module.exports = { logErrors, ormErrorHandler, errorHandler }

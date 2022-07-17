@@ -16,6 +16,19 @@ class UserService {
     })
     return res
   }
+
+  async getUser(email, password) {
+    const user = await this.findByEmail(email)
+    if (!user) {
+      throw new Error('Incorrect email or password')
+    }
+    const isMatch = await bcrypt.compare(password, user.password)
+    if (!isMatch) {
+      throw new Error('Incorrect email or password')
+    }
+    delete user.dataValues.password
+    return user
+  }
 }
 
 module.exports = UserService
