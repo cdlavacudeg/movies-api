@@ -1,0 +1,646 @@
+{
+  "info": {
+    "_postman_id": "1ea329df-4449-45d8-9dd3-c4143ccb8a91",
+    "name": "Movie-Api",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "18494581"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "registerUser",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\":\"user@test.com\",\n    \"password\":\"123456\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/register",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "register"]
+            },
+            "description": "Register a new user, and send an email of confirmation."
+          },
+          "response": []
+        },
+        {
+          "name": "loginUser",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\":\"admin@test.com\",\n    \"password\":\"123456\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "login"]
+            },
+            "description": "Login to use the API, in it's response is the jwt token that must be used on the Authorization Bearer Token."
+          },
+          "response": []
+        }
+      ],
+      "description": "Authentication folder:\n\n*   Create User\n*   Login User: The API have all of it's end points protected, then you always need to Login first."
+    },
+    {
+      "name": "Movies",
+      "item": [
+        {
+          "name": "getMovies",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{$token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/movies",
+              "host": ["{{base_url}}"],
+              "path": ["movies"],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "Movie Tittle",
+                  "description": "Filter by tittle of the movie",
+                  "disabled": true
+                },
+                {
+                  "key": "genre",
+                  "value": "1",
+                  "description": "Filter by genderId",
+                  "disabled": true
+                },
+                {
+                  "key": "order",
+                  "value": "ASC",
+                  "description": "Order by date created ASC | DESC",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "List of the movies in the data base with some filters in the query."
+          },
+          "response": []
+        },
+        {
+          "name": "getMovieById",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{$token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/movies/:id_movie",
+              "host": ["{{base_url}}"],
+              "path": ["movies", ":id_movie"],
+              "variable": [
+                {
+                  "key": "id_movie",
+                  "value": "4"
+                }
+              ]
+            },
+            "description": "Get more details of a specific movie."
+          },
+          "response": []
+        },
+        {
+          "name": "createMovie",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{$token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"image\": \"New Movie\",\n    \"title\": \"New Movie\",\n    \"createdAt\": \"2018-07-13T14:06:37.013Z\",\n    \"calification\": 4,\n    \"genderId\":1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/movies",
+              "host": ["{{base_url}}"],
+              "path": ["movies"]
+            },
+            "description": "Create a new movie."
+          },
+          "response": []
+        },
+        {
+          "name": "createMovieAndGender",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{$token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"image\": \"Movie Image\",\n    \"title\": \"New Movie\",\n    \"createdAt\": \"2018-07-13T14:06:37.013Z\",\n    \"calification\": 4,\n    \"gender\":{\n        \"image\":\"New gender\",\n        \"name\":\"New gender\"\n    }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/movies",
+              "host": ["{{base_url}}"],
+              "path": ["movies"]
+            },
+            "description": "Create a new movie and gender (if it doesn't exist)."
+          },
+          "response": []
+        },
+        {
+          "name": "updateMovie",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{$token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"image\": \"Updated Movie\",\n    \"title\": \"Updated Movie\",\n    \"createdAt\": \"2018-07-13T14:06:37.013Z\",\n    \"calification\": 4,\n    \"genderId\":1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/movies/:id_movie",
+              "host": ["{{base_url}}"],
+              "path": ["movies", ":id_movie"],
+              "variable": [
+                {
+                  "key": "id_movie",
+                  "value": "6"
+                }
+              ]
+            },
+            "description": "Update the information of a specific movie."
+          },
+          "response": []
+        },
+        {
+          "name": "deleteMovie",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{$token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/movies/:id_movie",
+              "host": ["{{base_url}}"],
+              "path": ["movies", ":id_movie"],
+              "variable": [
+                {
+                  "key": "id_movie",
+                  "value": "2"
+                }
+              ]
+            },
+            "description": "Delete a specific movie."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Characters",
+      "item": [
+        {
+          "name": "getCharacters",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{$token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/characters",
+              "host": ["{{base_url}}"],
+              "path": ["characters"],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "Character 2",
+                  "description": "Filter by character name",
+                  "disabled": true
+                },
+                {
+                  "key": "age",
+                  "value": "20",
+                  "description": "Filter by character age",
+                  "disabled": true
+                },
+                {
+                  "key": "movie",
+                  "value": "1",
+                  "description": "Filter by movie Id",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "List of the characters in the data base with some filters in the query."
+          },
+          "response": []
+        },
+        {
+          "name": "getCharacterById",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{$token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/characters/:character_id",
+              "host": ["{{base_url}}"],
+              "path": ["characters", ":character_id"],
+              "variable": [
+                {
+                  "key": "character_id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Get more details of a specific character."
+          },
+          "response": []
+        },
+        {
+          "name": "createCharacter",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{$token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"image\":\"\",\n    \"name\":\"Test creation 4\",\n    \"history\": \"Test creation 4\",\n    \"age\":20,\n    \"weight\":40,\n    \"moviesId\":[3,8,10]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/characters",
+              "host": ["{{base_url}}"],
+              "path": ["characters"]
+            },
+            "description": "Create a new character."
+          },
+          "response": []
+        },
+        {
+          "name": "updateCharacter",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{$token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"image\":\"New Image\",\n    \"name\":\"Test creation 3\",\n    \"history\": \"Test creation 3\",\n    \"age\":20,\n    \"weight\":40,\n    \"moviesId\":[3,8,10]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/characters/:character_id",
+              "host": ["{{base_url}}"],
+              "path": ["characters", ":character_id"],
+              "variable": [
+                {
+                  "key": "character_id",
+                  "value": "5"
+                }
+              ]
+            },
+            "description": "Update the information of a specific character."
+          },
+          "response": []
+        },
+        {
+          "name": "deleteCharacter",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{$token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/characters/:character_id",
+              "host": ["{{base_url}}"],
+              "path": ["characters", ":character_id"],
+              "variable": [
+                {
+                  "key": "character_id",
+                  "value": "5"
+                }
+              ]
+            },
+            "description": "Delete a character."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Genders",
+      "item": [
+        {
+          "name": "getGenders",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{$token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/genders",
+              "host": ["{{base_url}}"],
+              "path": ["genders"]
+            },
+            "description": "List of the movie genders in the data base."
+          },
+          "response": []
+        },
+        {
+          "name": "getGenderById",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{$token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/genders/:gender_id",
+              "host": ["{{base_url}}"],
+              "path": ["genders", ":gender_id"],
+              "variable": [
+                {
+                  "key": "gender_id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Get more details of a specific gender."
+          },
+          "response": []
+        },
+        {
+          "name": "createGender",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{$token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"image\":\"Image Gender 10\",\n    \"name\":\"Gender 10\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/genders",
+              "host": ["{{base_url}}"],
+              "path": ["genders"]
+            },
+            "description": "Create a new gender."
+          },
+          "response": []
+        },
+        {
+          "name": "updateGender",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{$token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"image\":\"Update Image\",\n    \"name\":\"Gender Updated\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/genders/:gender_id",
+              "host": ["{{base_url}}"],
+              "path": ["genders", ":gender_id"],
+              "variable": [
+                {
+                  "key": "gender_id",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Get more details of a specific gender."
+          },
+          "response": []
+        },
+        {
+          "name": "deleteGender",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{$token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/genders/:gender_id",
+              "host": ["{{base_url}}"],
+              "path": ["genders", ":gender_id"],
+              "variable": [
+                {
+                  "key": "gender_id",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Delete a gender."
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [""]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [""]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "localhost:3000/api/v1",
+      "type": "string"
+    },
+    {
+      "key": "$token",
+      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiYWRtaW5AdGVzdC5jb20iLCJpYXQiOjE2NTgxMDU5MDAsImV4cCI6MTY1ODE5MjMwMH0.iI_VJIO6K5LuGIi6j35UcRUwWpDm7DLdQmKCNG4_42o",
+      "type": "string"
+    }
+  ]
+}
