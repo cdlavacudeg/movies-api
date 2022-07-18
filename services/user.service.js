@@ -2,6 +2,8 @@ const { models } = require('../libs/sequelize')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const { config } = require('./../config/config')
+const sgMail = require('@sendgrid/mail')
+sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 class UserService {
   async create(data) {
@@ -36,6 +38,18 @@ class UserService {
     const payload = { sub: user.id, email: user.email }
     const token = jwt.sign(payload, config.jwtSecret, { expiresIn: '1d' })
     return { user, token }
+  }
+
+  async sendMail(email) {
+    const msg = {
+      to: email, // Change to your recipient
+      from: 'cristianlav10@gmail.com', // Change to your verified sender
+      subject: 'User registration Successfull',
+      text: 'Congratulations, your user has been successfully created',
+    }
+
+    const response = sgMail.send(msg)
+    return response
   }
 }
 

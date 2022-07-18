@@ -18,6 +18,7 @@ router.post(
     try {
       const body = req.body
       const newUser = await service.create(body)
+      await service.sendMail(body.email)
       response.success(
         req,
         res,
