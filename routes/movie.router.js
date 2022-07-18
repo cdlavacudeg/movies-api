@@ -1,5 +1,6 @@
 const express = require('express')
 const { checkSchema } = require('express-validator')
+const passport = require('passport')
 const MovieService = require('./../services/movie.service')
 const response = require('./../utils/responses')
 const {
@@ -12,17 +13,22 @@ const { validateField } = require('./schemas/validate-field')
 const router = express.Router()
 const service = new MovieService()
 
-router.get('/', async (req, res, next) => {
-  try {
-    const movies = await service.find(req.query)
-    response.success(req, res, 'API get - list of movies', { movie: movies })
-  } catch (error) {
-    next(error)
+router.get(
+  '/',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res, next) => {
+    try {
+      const movies = await service.find(req.query)
+      response.success(req, res, 'API get - list of movies', { movie: movies })
+    } catch (error) {
+      next(error)
+    }
   }
-})
+)
 
 router.get(
   '/:id',
+  passport.authenticate('jwt', { session: false }),
   checkSchema(idMovieSchema),
   validateField,
   async (req, res, next) => {
@@ -38,6 +44,7 @@ router.get(
 
 router.post(
   '/',
+  passport.authenticate('jwt', { session: false }),
   checkSchema(createMovieSchema),
   validateField,
   async (req, res, next) => {
@@ -59,6 +66,7 @@ router.post(
 
 router.patch(
   '/:id',
+  passport.authenticate('jwt', { session: false }),
   checkSchema(idMovieSchema),
   checkSchema(updateMovieSchema),
   validateField,
@@ -78,6 +86,7 @@ router.patch(
 
 router.delete(
   '/:id',
+  passport.authenticate('jwt', { session: false }),
   checkSchema(idMovieSchema),
   validateField,
   async (req, res, next) => {

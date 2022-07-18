@@ -11,21 +11,27 @@ const {
 } = require('./schemas/character.schema')
 const { validateField } = require('./schemas/validate-field')
 const { checkSchema } = require('express-validator')
+const passport = require('passport')
 
-router.get('/', async (req, res, next) => {
-  try {
-    const query = req.query
-    const characters = await service.find(query)
-    response.success(req, res, 'API get - list of characters', {
-      character: characters,
-    })
-  } catch (error) {
-    next(error)
+router.get(
+  '/',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res, next) => {
+    try {
+      const query = req.query
+      const characters = await service.find(query)
+      response.success(req, res, 'API get - list of characters', {
+        character: characters,
+      })
+    } catch (error) {
+      next(error)
+    }
   }
-})
+)
 
 router.get(
   '/:id',
+  passport.authenticate('jwt', { session: false }),
   checkSchema(idCharacterSchema),
   validateField,
   async (req, res, next) => {
@@ -41,6 +47,7 @@ router.get(
 
 router.post(
   '/',
+  passport.authenticate('jwt', { session: false }),
   checkSchema(createCharacterSchema),
   validateField,
   async (req, res, next) => {
@@ -62,6 +69,7 @@ router.post(
 
 router.patch(
   '/:id',
+  passport.authenticate('jwt', { session: false }),
   checkSchema(idCharacterSchema),
   checkSchema(updateCharacterSchema),
   validateField,
@@ -81,6 +89,7 @@ router.patch(
 
 router.delete(
   '/:id',
+  passport.authenticate('jwt', { session: false }),
   checkSchema(idCharacterSchema),
   validateField,
   async (req, res, next) => {

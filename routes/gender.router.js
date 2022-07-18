@@ -9,18 +9,24 @@ const {
 } = require('./schemas/gender.schema')
 const { validateField } = require('./schemas/validate-field')
 const { checkSchema } = require('express-validator')
+const passport = require('passport')
 
-router.get('/', async (req, res, next) => {
-  try {
-    const gender = await service.find(req.query)
-    response.success(req, res, 'API get - list of genders', { gender })
-  } catch (error) {
-    next(error)
+router.get(
+  '/',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res, next) => {
+    try {
+      const gender = await service.find(req.query)
+      response.success(req, res, 'API get - list of genders', { gender })
+    } catch (error) {
+      next(error)
+    }
   }
-})
+)
 
 router.get(
   '/:id',
+  passport.authenticate('jwt', { session: false }),
   checkSchema(idGenderSchema),
   validateField,
   async (req, res, next) => {
@@ -36,6 +42,7 @@ router.get(
 
 router.post(
   '/',
+  passport.authenticate('jwt', { session: false }),
   checkSchema(createGenderSchema),
   validateField,
   async (req, res, next) => {
@@ -57,6 +64,7 @@ router.post(
 
 router.patch(
   '/:id',
+  passport.authenticate('jwt', { session: false }),
   checkSchema(idGenderSchema),
   validateField,
   async (req, res, next) => {
@@ -75,6 +83,7 @@ router.patch(
 
 router.delete(
   '/:id',
+  passport.authenticate('jwt', { session: false }),
   checkSchema(idGenderSchema),
   validateField,
   async (req, res, next) => {
